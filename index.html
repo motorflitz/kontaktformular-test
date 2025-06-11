@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kontaktformular Test</title>
+</head>
+<body>
+  <h1>Kontaktformular</h1>
+  <form method="POST" action="/api/send">
+    <input type="text" name="name" placeholder="Dein Name" required /><br>
+    <input type="email" name="email" placeholder="Deine E-Mail" required /><br>
+    <textarea name="message" placeholder="Nachricht" required></textarea><br>
+    <button type="submit">Senden</button>
+  </form>
+</body>
+</html>
