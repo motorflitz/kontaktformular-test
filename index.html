@@ -210,6 +210,40 @@
       display: block;
     }
 
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      margin-top: 2px;
+      accent-color: #667eea;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .checkbox-label {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #555;
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .privacy-link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .privacy-link:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 600px) {
       .container {
         padding: 30px 20px;
@@ -265,6 +299,20 @@
       </div>
 
       <div class="form-group">
+        <label for="phone">Telefonnummer</label>
+        <input
+          type="tel"
+          id="phone"
+          name="phone"
+          class="form-control"
+          placeholder="+49 123 456789"
+          minlength="5"
+          maxlength="20"
+        />
+        <div class="error-message">Bitte geben Sie eine gültige Telefonnummer ein</div>
+      </div>
+
+      <div class="form-group">
         <label for="message">Ihre Nachricht *</label>
         <textarea
           id="message"
@@ -276,6 +324,21 @@
           maxlength="1000"
         ></textarea>
         <div class="error-message">Bitte geben Sie eine Nachricht ein (mindestens 10 Zeichen)</div>
+      </div>
+
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input
+            type="checkbox"
+            id="privacy"
+            name="privacy"
+            required
+          />
+          <label for="privacy" class="checkbox-label">
+            Ich stimme der <a href="#" target="_blank" class="privacy-link">Datenschutzerklärung</a> zu und bin damit einverstanden, dass meine Daten zur Bearbeitung meiner Anfrage gespeichert werden. *
+          </label>
+        </div>
+        <div class="error-message">Bitte stimmen Sie der Datenschutzerklärung zu</div>
       </div>
 
       <button type="submit" class="btn" id="submitBtn">
@@ -307,6 +370,21 @@
         if (field.type === 'email' && field.value.trim()) {
           const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           if (!emailRegex.test(field.value.trim())) {
+            isValid = false;
+          }
+        }
+
+        // Phone validation (optional field)
+        if (field.type === 'tel' && field.value.trim()) {
+          const phoneRegex = /^[\+]?[0-9\s\-\(\)]{5,20}$/;
+          if (!phoneRegex.test(field.value.trim())) {
+            isValid = false;
+          }
+        }
+
+        // Checkbox validation
+        if (field.type === 'checkbox' && field.hasAttribute('required')) {
+          if (!field.checked) {
             isValid = false;
           }
         }
