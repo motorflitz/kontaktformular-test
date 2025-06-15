@@ -4,7 +4,9 @@ export async function onRequestPost(context) {
     const formData = await context.request.formData();
     const name = formData.get("name")?.trim();
     const email = formData.get("email")?.trim();
+    const phone = formData.get("phone")?.trim();
     const message = formData.get("message")?.trim();
+    const privacy = formData.get("privacy");
 
     // Validation
     const errors = [];
@@ -19,6 +21,16 @@ export async function onRequestPost(context) {
 
     if (!message || message.length < 10 || message.length > 1000) {
       errors.push("Nachricht muss zwischen 10 und 1000 Zeichen lang sein");
+    }
+
+    // Phone validation (optional field)
+    if (phone && !isValidPhone(phone)) {
+      errors.push("Telefonnummer ist ungültig");
+    }
+
+    // Privacy consent validation
+    if (!privacy || privacy !== "on") {
+      errors.push("Datenschutz-Zustimmung ist erforderlich");
     }
 
     if (errors.length > 0) {
@@ -43,6 +55,7 @@ export async function onRequestPost(context) {
     // Sanitize inputs for email content
     const sanitizedName = sanitizeText(name);
     const sanitizedMessage = sanitizeText(message);
+    const sanitizedPhone = phone ? sanitizeText(phone) : null;
 
     // Send email via Resend API
     const response = await fetch("https://api.resend.com/emails", {
@@ -59,7 +72,7 @@ export async function onRequestPost(context) {
         text: `Neue Nachricht über das Kontaktformular:
 
 Von: ${sanitizedName}
-E-Mail: ${email}
+E-Mail: ${email}${sanitizedPhone ? `\nTelefon: ${sanitizedPhone}` : ''}
 Datum: ${new Date().toLocaleString('de-DE')}
 
 Nachricht:
@@ -72,6 +85,7 @@ ${sanitizedMessage}`,
             <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <p><strong>Von:</strong> ${sanitizedName}</p>
               <p><strong>E-Mail:</strong> <a href="mailto:${email}">${email}</a></p>
+              ${sanitizedPhone ? `<p><strong>Telefon:</strong> <a href="tel:${sanitizedPhone}">${sanitizedPhone}</a></p>` : ''}
               <p><strong>Datum:</strong> ${new Date().toLocaleString('de-DE')}</p>
             </div>
             <div style="margin: 20px 0;">
@@ -119,6 +133,13 @@ ${sanitizedMessage}`,
 function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email) && email.length <= 254;
+}
+
+// Helper function to validate phone number
+function isValidPhone(phone) {
+  // Allow international format, spaces, dashes, parentheses
+  const phoneRegex = /^[\+]?[0-9\s\-\(\)]{5,20}$/;
+  return phoneRegex.test(phone);
 }
 
 // Helper function to sanitize text content
