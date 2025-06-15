@@ -3,15 +3,398 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kontaktformular Test</title>
+  <meta name="description" content="Kontaktieren Sie uns über unser modernes Kontaktformular" />
+  <meta name="keywords" content="Kontakt, Nachricht, E-Mail" />
+  <title>Kontakt - Moderne Kommunikation</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      color: #333;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header p {
+      color: #666;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid #e1e5e9;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #fff;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-control:hover {
+      border-color: #667eea;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+      font-family: inherit;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-loading {
+      color: transparent;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      margin-left: -10px;
+      margin-top: -10px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .alert {
+      padding: 15px 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-weight: 500;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-group.error .form-control {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    }
+
+    .form-group.error .error-message {
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+        margin: 10px;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .header p {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Kontaktformular</h1>
-  <form method="POST" action="/api/send">
-    <input type="text" name="name" placeholder="Dein Name" required /><br>
-    <input type="email" name="email" placeholder="Deine E-Mail" required /><br>
-    <textarea name="message" placeholder="Nachricht" required></textarea><br>
-    <button type="submit">Senden</button>
-  </form>
+  <div class="container">
+    <div class="header">
+      <h1>Kontakt</h1>
+      <p>Wir freuen uns auf Ihre Nachricht und melden uns schnellstmöglich bei Ihnen zurück.</p>
+    </div>
+
+    <div id="alertContainer"></div>
+
+    <form id="contactForm" method="POST" action="/api/send" novalidate>
+      <div class="form-group">
+        <label for="name">Ihr Name *</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="form-control"
+          placeholder="Max Mustermann"
+          required
+          minlength="2"
+          maxlength="100"
+        />
+        <div class="error-message">Bitte geben Sie Ihren Namen ein (mindestens 2 Zeichen)</div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">E-Mail-Adresse *</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-control"
+          placeholder="max@beispiel.de"
+          required
+        />
+        <div class="error-message">Bitte geben Sie eine gültige E-Mail-Adresse ein</div>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Ihre Nachricht *</label>
+        <textarea
+          id="message"
+          name="message"
+          class="form-control"
+          placeholder="Schreiben Sie uns Ihre Nachricht..."
+          required
+          minlength="10"
+          maxlength="1000"
+        ></textarea>
+        <div class="error-message">Bitte geben Sie eine Nachricht ein (mindestens 10 Zeichen)</div>
+      </div>
+
+      <button type="submit" class="btn" id="submitBtn">
+        Nachricht senden
+      </button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('contactForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const alertContainer = document.getElementById('alertContainer');
+
+      // Form validation
+      function validateField(field) {
+        const formGroup = field.closest('.form-group');
+        let isValid = true;
+
+        // Remove existing error state
+        formGroup.classList.remove('error');
+
+        // Check if field is required and empty
+        if (field.hasAttribute('required') && !field.value.trim()) {
+          isValid = false;
+        }
+
+        // Email validation
+        if (field.type === 'email' && field.value.trim()) {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailRegex.test(field.value.trim())) {
+            isValid = false;
+          }
+        }
+
+        // Length validation
+        if (field.hasAttribute('minlength') && field.value.trim().length < parseInt(field.getAttribute('minlength'))) {
+          isValid = false;
+        }
+
+        if (field.hasAttribute('maxlength') && field.value.trim().length > parseInt(field.getAttribute('maxlength'))) {
+          isValid = false;
+        }
+
+        if (!isValid) {
+          formGroup.classList.add('error');
+        }
+
+        return isValid;
+      }
+
+      // Real-time validation
+      const formFields = form.querySelectorAll('.form-control');
+      formFields.forEach(field => {
+        field.addEventListener('blur', () => validateField(field));
+        field.addEventListener('input', () => {
+          if (field.closest('.form-group').classList.contains('error')) {
+            validateField(field);
+          }
+        });
+      });
+
+      // Show alert
+      function showAlert(message, type) {
+        alertContainer.innerHTML = `
+          <div class="alert alert-${type}">
+            ${message}
+          </div>
+        `;
+        alertContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Form submission
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Validate all fields
+        let isFormValid = true;
+        formFields.forEach(field => {
+          if (!validateField(field)) {
+            isFormValid = false;
+          }
+        });
+
+        if (!isFormValid) {
+          showAlert('Bitte korrigieren Sie die markierten Felder.', 'error');
+          return;
+        }
+
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.classList.add('btn-loading');
+        alertContainer.innerHTML = '';
+
+        try {
+          const formData = new FormData(form);
+          const response = await fetch('/api/send', {
+            method: 'POST',
+            body: formData
+          });
+
+          const result = await response.text();
+
+          if (response.ok) {
+            showAlert('Vielen Dank! Ihre Nachricht wurde erfolgreich gesendet. Wir melden uns bald bei Ihnen.', 'success');
+            form.reset();
+          } else {
+            throw new Error(result || 'Ein Fehler ist aufgetreten');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          showAlert('Entschuldigung, beim Senden Ihrer Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.', 'error');
+        } finally {
+          // Reset button state
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('btn-loading');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
